@@ -13,7 +13,7 @@
 	<body>
 		<h1>Lab 3</h1>
 		<!-- https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks -->
-		<p> Answers for the <a href="https://cs.calvin.edu/courses/cs/336/kvlinden/03node/lab.html">lab 3 exercises:</a> </p>
+	    Answers for the <a href="https://cs.calvin.edu/courses/cs/336/kvlinden/03node/lab.html">lab 3 exercises:</a>
 		<!-- Nested list of answers -->
 		<!-- Used the HTML tutorial that Prof. VanderLinden gave us in the "Prerequistes" section -->
 		<!-- in order to determine how to use the <ul>, <li>, and <em> tags -->
@@ -21,23 +21,23 @@
 			<li> <em>3.1</em> </li>
 				<ul>
 
-					<li>Answers....</li>
-
+				<!-- Purpose of Node.js found from: https://nodejs.org/en/ -->
+					<li><p>The purpose of <strong>Node.js</strong> is to provide a Javascript runtime for your application. 
+							The purpose of <strong>Express</strong> is to provide a flexible web framework for your application.
+							<strong>Node.js</strong> provides the runtime, while <strong>Express</strong> provides a web framework (module) that you load into your application.
+							Their purposes are similar in that they both provide more funtionality to your web application.</p></li>
+					<li><p>The purpose of the <strong>packages.json</strong> is to provide information about your application. 
+							This includes the name, version, scripts, and any dependencies that your application relies on (such as <strong>Express</strong>) and what version those dependencies are.</p></li>
 				</ul>
 			<li> <em>3.2</em> </li>
 				<ul>
 
-					<li>Answers....</li>
-
-				</ul>
-			<li> <em>3.3</em> </li>
-				<ul>
-
-					<li>Answers....</li>
-
+					<li><p>They are <strong>static</strong> in the sense that they do not change. The server doesn't need to do any work in order to create them. It simply sends the file over and it is display on the page.</p></li>
+					<li><p>When you first connect to the port number that the server is listening on, then it will serve up the "Hello World!" message.
+							However, if you access a different file (<strong>index.html</strong>, for example), then the server will send over the file so that it can be displayed onto the webpage. It will no longer server the "Hello World" message at that point because it is serving the file that you want to access.</p></li>
 				</ul>
 		</ul>
-		<!-- Got the image from: https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2015/07/1436439824nodejs-logo.png -->
-		<img src="node.js_logo.png" />
+		<!-- Got the image from: https://imgs.xkcd.com/comics/university_website.png -->
+		<img src="comic.png" />
 	</body>
 </html>
