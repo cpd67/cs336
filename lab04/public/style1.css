@@ -1,0 +1,31 @@
+strong { 
+	color: #f00; 
+	font: 200% serif;
+}
+
+/*.carrot { 
+	color: #fa0; 
+}*/
+
+.spinach { 
+	color: #080; 
+}
+
+#first { 
+	font-style: italic; 
+}
+
+
+p {
+	color: #00f;
+}
+
+p:before{
+  content: url("yellow-pin.png");
+}
+
+/* Rule that changes the font throughout the document (the stuff enclosed within the <body> tag) */
+body {
+	font: 16px "Comic Sans MS", cursive;
+	background: url("Blue-rule.png");
+}
