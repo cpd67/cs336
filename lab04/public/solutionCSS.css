@@ -42,12 +42,13 @@ body {
 }
 
 h3 {
-	border-top: 1px solid gray;
 	clear: left;
 }
 
 h3.numbered {
 	counter-reset: mynum;
+	margin-left:200px;
+	margin-top:-250px;
 }
 
 h3:before {
@@ -64,6 +65,11 @@ ul, #numbered {
 	float: left;
 	border: 1em solid #69b;
 	padding-right: 0.5em;
+}
+
+#numbered {
+	margin-left:200px;
+	margin-top:-250px;
 }
 
 #fixed-pin {
@@ -164,4 +170,5 @@ ul, #numbered {
 h1:hover {
 	color: blue;
 }
+
 
