@@ -1,0 +1,15 @@
+/*** Print sample ***/
+
+@import url("style4_print.css") print;
+
+/* defaults  for screen */
+#print-head,
+#print-foot {
+  display: none;
+  }
+
+h1:hover {
+	color: blue;
+}
+/* print only */
+/* end print only */

@@ -1,17 +1,41 @@
 /* numbered paragraphs */
-body {counter-reset: headnum;}
-h3.numbered {counter-reset: mynum;}
+body {
+	counter-reset: headnum;
+}
+
+h3 {
+	border-top: 1px solid gray;
+	clear: left;
+}
+
+h3.numbered {
+	counter-reset: mynum;
+}
+
 h3:before {
-  content: "(" counter(headnum, upper-latin) ") ";
-  counter-increment: headnum;
+	content: "(" counter(headnum, upper-latin) ") ";
+	counter-increment: headnum;
 }
 
 p.numbered:before {
-  content: counter(mynum) ": ";
-  counter-increment: mynum;
-  font-weight: bold;
+	content: counter(mynum) ": ";
+	counter-increment: mynum;
+	font-weight: bold;
 }
 
 li {
-  list-style: lower-roman;
+	list-style: lower-roman;
+	margin-bottom: 8px;
+}
+
+ul, #numbered {
+	float: left;
+	border: 1em solid #69b;
+	padding-right: 0.5em;
+}
+
+#fixed-pin {
+	position: fixed;
+	top: 3px;
+	right: 3px;
 }
