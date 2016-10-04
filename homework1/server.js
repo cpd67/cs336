@@ -1,5 +1,5 @@
 /**
- * server.js contains the code needed in order to run homework1 for CS-336.
+ * server.js contains the code needed in order to do homework1 for CS-336.
  * Student name: Chris Dilley (cpd5).
  * Date: 10/03/16 (Start date).
  * The tutorial found here was extremely helpful: http://expressjs.com/en/guide/routing.html
