@@ -1,0 +1,76 @@
+body {
+  font: 24px Helvetica;
+  background: #999;
+}
+#main {
+  min-height: 800px;
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  flex-flow: row;
+}
+#main > article {
+  font: 20px sans serif;
+  padding: 30px;
+  border: 1px solid #000;
+  background: #dd8;
+  flex: 3 1 60%;
+  order: 2;
+}
+#main > nav {
+  font: 20px arial;
+  text-align: right;
+  padding: 20px;
+  float: right;
+  border: 1px solid #000;
+  background: #ccf;
+  flex: 1 6 20%;
+  order: 1;
+}
+#main > aside {
+  font: 20px;
+  padding: 30px;
+  border: 1px solid #000;
+  background: #ccf;
+  flex: 1 6 20%;
+  order: 3;
+}
+header,
+footer {
+  display: block;
+  padding: 30px;
+  min-height: 50px;
+  border: 1px solid #000;
+  background: #feb;
+}
+/* Too narrow to support three columns */
+/* This changes the flexbox stuff when on a smartphone screen */
+@media all and (max-width: 640px) {
+  #main,
+  #page {
+    flex-direction: column;
+  }
+  #main > article,
+  #main > nav,
+  #main > aside {
+/* Return them to document order */
+    order: 0;
+  }
+  #main > nav {
+    order: 0;
+    text-align: left;
+  }
+  #main > article {
+    order: 1;
+  }
+  #main > aside {
+    order: 2;
+  }
+  #main > nav,
+  #main > aside,
+  header,
+  footer {
+    min-height: 50px;
+    max-height: 50px;
+  }
+}
