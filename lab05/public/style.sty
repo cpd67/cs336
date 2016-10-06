@@ -1,75 +1,86 @@
+/* Variables for the fonts and padding of header and footer */
+bodyFont = 24px Helvetica 
+articleFont = 20px sans serif
+navFont = 20px arial
+headerFootPadding = 30px
+asideFont = 20px sans serif
+
 body
-	font: 24px Helvetica
+	font: bodyFont
 	background: #999999
 
+/* Properties to be inherited by each component (except the body) */
+/* Uses nesting */
 #main
 	min-height: 800px
 	margin: 0px
 	padding: 0px
 	display: flex
 	flex-flow: row
- 
-#main > article
-	font: 20px sans serif
-	padding: 30px
-	border: 1px solid #000000
-	background: #dddd88
-	flex: 3 1 60%
-	order: 2
-
-#main > nav
-	font: 20px arial
-	text-align: right
-	padding: 20px
-	float: right
-	border: 1px solid #000000
-	background: #ccccff
-	flex: 1 6 20%
-	order: 1
- 
-#main > aside
-	font: 20px
-	padding: 30px
-	border: 1px solid #000000
-	background: #ccccff
-	flex: 1 6 20%
-	order: 3
- 
+	article
+		font: articleFont
+		padding: 30px
+		border: 1px solid #000000
+		background: #dddd88
+		flex: 3 1 60%
+		order: 2
+	nav
+		font: navFont
+		text-align: right
+		padding: 20px
+		float: right
+		border: 1px solid #000000
+		background: #ccccff
+		flex: 1 6 20%
+		order: 1
+	aside
+		font: asideFont
+		padding: 30px
+		border: 1px solid #000000
+		background: #ccccff
+		flex: 1 6 20%
+		order: 3
+			
 header, footer
 	display: block
-	padding: 30px
+	padding: headerFootPadding
 	min-height: 50px
 	border: 1px solid #000000
 	background: #ffeebb
  
 /* Too narrow to support three columns */
 /* This changes the flexbox stuff when on a smartphone screen */
-@media all and (max-width: 640px) {
-	#main, #page {
+@media all and (max-width: 640px)
+	#main
+	#page
+		/* Change the layout of the webpage to column view */
 		flex-direction: column;
-	}
-	
-    #main > article, #main > nav, #main > aside {
-	    /* Return them to document order */
-	    order: 0;
-    }
-  	
-	#main > nav {
-		order: 0;
-		text-align: left;
-	}
-	
-	#main > article {
-		order: 1;
-	}
-
-	#main > aside {
-		order: 2;
-	}
-
-    #main > nav, #main > aside, header, footer {
-	    min-height: 50px;
-	    max-height: 50px;
-    }
-}
- 
+	#main 
+		article 
+		nav
+		aside
+		    /* Return them to document order */
+		    order: 0;
+	#main
+		nav
+			/* Change the nav order and align the text to the left */
+			order: 0;
+			text-align: left;
+	#main
+		article
+			/* Change the article order to come after the nav */
+			order: 1;
+	#main
+		aside
+			/* Change the aside order to come after the article */
+			order: 2;
+	#main 
+		nav 
+		aside
+			/* Set the min and max heights for each component */
+		    min-height: 50px;
+		    max-height: 50px;
+	header, footer
+		/* Set the min and max heights for each component */
+		min-height: 50px;
+		max-height: 50px;

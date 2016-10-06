@@ -1,7 +1,10 @@
+/* Variables for the fonts and padding of header and footer */
 body {
   font: 24px Helvetica;
   background: #999;
 }
+/* Properties to be inherited by each component (except the body) */
+/* Uses nesting */
 #main {
   min-height: 800px;
   margin: 0px;
@@ -9,7 +12,7 @@ body {
   display: flex;
   flex-flow: row;
 }
-#main > article {
+#main article {
   font: 20px sans serif;
   padding: 30px;
   border: 1px solid #000;
@@ -17,7 +20,7 @@ body {
   flex: 3 1 60%;
   order: 2;
 }
-#main > nav {
+#main nav {
   font: 20px arial;
   text-align: right;
   padding: 20px;
@@ -27,8 +30,8 @@ body {
   flex: 1 6 20%;
   order: 1;
 }
-#main > aside {
-  font: 20px;
+#main aside {
+  font: 20px sans serif;
   padding: 30px;
   border: 1px solid #000;
   background: #ccf;
@@ -48,28 +51,37 @@ footer {
 @media all and (max-width: 640px) {
   #main,
   #page {
+/* Change the layout of the webpage to column view */
     flex-direction: column;
   }
-  #main > article,
-  #main > nav,
-  #main > aside {
+  #main {
+article
+nav
+aside
 /* Return them to document order */
     order: 0;
   }
-  #main > nav {
+  #main nav {
+/* Change the nav order and align the text to the left */
     order: 0;
     text-align: left;
   }
-  #main > article {
+  #main article {
+/* Change the article order to come after the nav */
     order: 1;
   }
-  #main > aside {
+  #main aside {
+/* Change the aside order to come after the article */
     order: 2;
   }
-  #main > nav,
-  #main > aside,
+  #main {
+nav
+    min-height: 50px;
+    max-height: 50px;
+  }
   header,
   footer {
+/* Set the min and max heights for each component */
     min-height: 50px;
     max-height: 50px;
   }

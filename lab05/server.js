@@ -1,3 +1,8 @@
+/**
+ * server.js is a Node.js web server application that runs the CS-336 Lab05 code.
+ * Student name: Chris Dilley (cpd5).
+ * Start-date: 10/5/16 
+ */
 var express = require('express');
 
 var app = express();
