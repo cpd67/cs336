@@ -1,0 +1,12 @@
+{
+  "name": "lab06",
+  "version": "1.0.0",
+  "description": "CS-336 Lab 06 code.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Chris Dilley (cpd5)",
+  "license": "ISC"
+}
