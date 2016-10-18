@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Lab 7.1</title>
+	<style>
+		a.test {
+		    font-weight: bold;
+		}
+	</style>
+</head>
+<body>
+    <a href="http://jquery.com/">jQuery</a>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+    <script>
+ 	
+	//Tutorial code
+	$( document ).ready(function() {
+	 	
+		$( "a" ).addClass( "test" );
+		
+	    $( "a" ).click(function( event ) {
+	 	
+	        alert( "As you can see, the link no longer took you to jquery.com" );
+	 
+	        event.preventDefault();
+			
+			$( this ).hide( "slow" );
+	 
+	    });
+	
+		$( "a" ).removeClass( "test" );
+
+		$( "body" ).innerHTML = "<p>This was added!</p>";
+	});
+	 
+    </script>
+</body>
+</html>
