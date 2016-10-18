@@ -14,9 +14,12 @@
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
     <script>
  	
-	//Tutorial code
 	$( document ).ready(function() {
-	 	
+		
+		//Add a paragraph below the anchor link
+	 	$( "<p>This was added!</p>" ).insertAfter( "a" );
+		
+		//Tutorial code
 		$( "a" ).addClass( "test" );
 		
 	    $( "a" ).click(function( event ) {
@@ -30,8 +33,7 @@
 	    });
 	
 		$( "a" ).removeClass( "test" );
-
-		$( "body" ).innerHTML = "<p>This was added!</p>";
+		
 	});
 	 
     </script>
