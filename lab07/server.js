@@ -14,7 +14,8 @@ server.get("/", function(req, res) {
 });
 
 server.get("/hello", function(req, res) {
-	res.send( {"message" : "Hello, " + req.query.name + " !"} );
+	//Taken from example code from the code cs336 repo that Professor Vander Linden made
+	res.send( {"message" : "Hello, " + req.query.name + "!"} );
 });
 
 server.listen(PORT, function() {

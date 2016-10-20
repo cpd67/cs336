@@ -19,7 +19,7 @@ $( document ).ready(function() {
 		// Code to run if the request succeeds (is done);
 		// The response is passed to the function
 		.done(function( json ) {
-			$("#get-data").next("div").html("<p>" + json.content + "</p>");
+			$("#get-data").next("div").html("<p>" + json.message + "</p>");
 		})
 		// Code to run if the request fails; the raw request and
 		// status codes are passed to the function
