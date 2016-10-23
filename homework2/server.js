@@ -153,18 +153,19 @@ app.put('/put/:id', function(req, res) {
 	}
 });
 
-app.delete('/take/:id', function(req, res) {
-	var person;
+app.delete('/remove/:id', function(req, res) {
+	var person, index;
 	for(var i = 0; i < data.length; i++) {
 		if(data[i].loginID == req.params.id) {
 			person = data[i];
+			index = i;
 		}
 	}
 
 	if(person == null) {
 		res.sendStatus(404);
 	} else {
-		data = data.splice(i, 1);
+		data.splice(index, 1);
 		console.log(person);
 	}
 });
