@@ -151,11 +151,19 @@ app.post('/add', function(req, res) {
  */
 app.put('/update/:id/:first', function(req, res) {
 	var person, index;
+	var newName = req.params.first;
 	for(var i = 0; i < data.length; i++) {
 		if(data[i].loginID == req.params.id) {
 			person = data[i];
 			index = i;
 		}
+	}
+
+	if(person == null) {
+		res.sendStatus(404);
+	} else {
+		data[index].firstname = newName;
+		res.sendStatus(200);
 	}
 });
 
@@ -172,7 +180,8 @@ app.delete('/remove/:id', function(req, res) {
 		res.sendStatus(404);
 	} else {
 		data.splice(index, 1);
-		console.log(person);
+		console.log("Deleted: + " person);
+		res.sendStatus(200);
 	}
 });
 
