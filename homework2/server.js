@@ -180,7 +180,7 @@ app.delete('/remove/:id', function(req, res) {
 		res.sendStatus(404);
 	} else {
 		data.splice(index, 1);
-		console.log("Deleted: + " person);
+		console.log(person);
 		res.sendStatus(200);
 	}
 });
