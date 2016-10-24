@@ -140,16 +140,22 @@ app.post('/add', function(req, res) {
 	var date = req.body.date;
 	var newPerson = { firstname: first, lastname: last, loginID: login, startDate: date};
 	//http://www.w3schools.com/jsref/jsref_push.asp
+	//https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
 	data.push(newPerson);
+	res.sendStatus(201);
 });
 
 /**
  *
  * http://stackoverflow.com/questions/12142652/what-is-the-usefulness-of-put-and-delete-http-request-methods
  */
-app.put('/put/:id', function(req, res) {
+app.put('/update/:id/:first', function(req, res) {
+	var person, index;
 	for(var i = 0; i < data.length; i++) {
-
+		if(data[i].loginID == req.params.id) {
+			person = data[i];
+			index = i;
+		}
 	}
 });
 
