@@ -1,8 +1,13 @@
 /**
- * server.js contains the code needed in order to do homework1 for CS-336.
+ * server.js contains the code needed in order to do homework2 for CS-336.
  * Student name: Chris Dilley (cpd5).
- * Date: 10/03/16 (Start date).
- * The tutorial found here was extremely helpful: http://expressjs.com/en/guide/routing.html
+ * Date: 10/23/16 (Start date).
+ * The following resources were helpful:
+ * Express routing tutorial: http://expressjs.com/en/guide/routing.html
+ * AJAX deferred tutorial: http://jqfundamentals.com/chapter/ajax-deferreds
+ * Keeping track of which HTTP methods are idempotent and nullipotent: http://restcookbook.com/HTTP%20Methods/idempotency/
+ * Returning a status code from an idempotent method: http://stackoverflow.com/questions/4088350/is-rest-delete-really-idempotent
+ * Status code for a "failed" POST request: http://stackoverflow.com/questions/25541203/http-response-code-when-resource-creation-post-fails-due-to-existing-matching-re?noredirect=1&lq=1
  */
 
 var express = require('express');
@@ -15,6 +20,8 @@ var app = express();
 var data = [ { firstname: 'Sir Edmond', lastname: 'Jones', loginID: 1, startDate: '10/20/2000'},
 			 { firstname: 'David', lastname: 'Son', loginID: 2, startDate: '08/19/2010'},
 			 { firstname: 'Sarah', lastname: 'Smiles', loginID: 3, startDate: '10/3/2015'} ];
+
+///////////////Homework 1 ///////////////////
 
 //Give the user a welcome message when they reach root
 app.get('/', function (req, res) {
@@ -113,7 +120,10 @@ app.get('/person/:id/years', function(req, res) {
 
 ////////////////Homework 2/////////////////////
 
-app.get('/individual', function(req, res) {
+//GET method that retrieves a person from our database
+//and used in tandem with the AJAX call of the second new webpage
+app.get('/person', function(req, res) {
+		//Get the ID passed from the form
 		var id = req.query.personID;
 		var person;
 		for(var i = 0; i < data.length; i++) {
@@ -122,22 +132,46 @@ app.get('/individual', function(req, res) {
 			}
 		}
 
+		//Did we find the person?
 		if(person == null) {
+			//Not found!
 			res.sendStatus(404);
 		} else {
+			//Found!
 			res.send(person);
 		}
 });
 
-/**
- *
- *
- */
-app.post('/add', function(req, res) {
+//POST method that creates new people
+app.post('/people', function(req, res) {
+	//Get the passed form data
 	var first = req.body.first;
 	var last = req.body.last;
 	var login = req.body.login;
 	var date = req.body.date;
+
+	//If some data is missing...
+	if(first == '' || last == '' || login == '' || date == '') {
+		console.log("Some data is missing!");
+		console.log("Can't create Person...");
+		//We can't create a new person! Send a conflict status code.
+		res.sendStatus(409);
+		return;
+	}
+
+	//Check if the login ID is already in the "database"
+	for(var i = 0; i < data.length; i++) {
+		if(data[i].loginID == login) {
+			//http://stackoverflow.com/questions/25541203/http-response-code-when-resource-creation-post-fails-due-to-existing-matching-re?noredirect=1&lq=1
+			//The user already exists, send a conflict status code.
+			console.log("Person already exists with that login ID!");
+			console.log(data[i]);
+			res.sendStatus(409);
+			return;
+		}
+	}
+
+	//Everything seems okay. Go ahead with the addition of the person.
 	var newPerson = { firstname: first, lastname: last, loginID: login, startDate: date};
 	//http://www.w3schools.com/jsref/jsref_push.asp
 	//https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
@@ -145,12 +179,12 @@ app.post('/add', function(req, res) {
 	res.sendStatus(201);
 });
 
-/**
- *
- * http://stackoverflow.com/questions/12142652/what-is-the-usefulness-of-put-and-delete-http-request-methods
- */
-app.put('/update/:id/:first', function(req, res) {
+
+//http://stackoverflow.com/questions/12142652/what-is-the-usefulness-of-put-and-delete-http-request-methods
+//PUT method that updates the first name of a person (tested with curl)
+app.put('/person/:id/:first', function(req, res) {
 	var person, index;
+	//Get the first name of the person
 	var newName = req.params.first;
 	for(var i = 0; i < data.length; i++) {
 		if(data[i].loginID == req.params.id) {
@@ -159,15 +193,19 @@ app.put('/update/:id/:first', function(req, res) {
 		}
 	}
 
+	//Is the person in the database?
 	if(person == null) {
+		//Not found!
 		res.sendStatus(404);
 	} else {
+		//Found!
 		data[index].firstname = newName;
 		res.sendStatus(200);
 	}
 });
 
-app.delete('/remove/:id', function(req, res) {
+//DELETE method that removes a person from our "database" (tested with curl)
+app.delete('/person/:id', function(req, res) {
 	var person, index;
 	for(var i = 0; i < data.length; i++) {
 		if(data[i].loginID == req.params.id) {
@@ -176,11 +214,14 @@ app.delete('/remove/:id', function(req, res) {
 		}
 	}
 
+	//Did we find the person?
 	if(person == null) {
+		//Nope!
 		res.sendStatus(404);
 	} else {
+		//http://stackoverflow.com/questions/5767325/how-to-remove-a-particular-element-from-an-array-in-javascript
+		//Found! Remove them from the "database"
 		data.splice(index, 1);
-		console.log(person);
 		res.sendStatus(200);
 	}
 });

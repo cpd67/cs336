@@ -1,3 +1,8 @@
+
+//This script is used in tandem with the second webpage in order to get
+//a person from our "database" after getting an id from a form.
+
+//http://learn.jquery.com/ajax/
 $(document).ready(function() {
   $('form').submit(function(event) {
 
@@ -6,29 +11,24 @@ $(document).ready(function() {
 
     $.ajax({
       type: "GET",
-      url: "/individual",
+      url: "/person",
       data: form.serialize(),
       dataType: "json",
       success: function(resp) {
         console.log(resp);
       }
-    })		// Code to run if the request succeeds (is done);
-		// The response is passed to the function
+    })
 		.done(function( json ) {
-      //Get the data from the JSON 
+      //Get the data from the JSON
 			$("<p>").text("First name: " + json.firstname).appendTo("body");
       $("<p>").text("Last name: " + json.lastname).appendTo("body");
       $("<p>").text("Login ID: " + json.loginID).appendTo("body");
       $("<p>").text("Start date: " + json.startDate).appendTo("body");
 		})
-		// Code to run if the request fails; the raw request and
-		// status codes are passed to the function
 		.fail(function( xhr, status, errorThrown ) {
-		    alert( "Sorry, there was a problem!" );
+		    alert( "Failed to get the person!" );
 		    console.log( "Error: " + errorThrown );
 		    console.log( "Status: " + status );
-		    console.dir( xhr );
 		})
-
   });
 });
