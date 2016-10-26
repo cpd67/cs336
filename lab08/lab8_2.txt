@@ -1,0 +1,27 @@
+8.2.a:
+i. Returning a tree of components that either you or someone else has made
+   makes the UI composable. It is not necessary to return basic HTML.
+   This matters because composability is key in maintainable frontends.
+ii. JSX syntax is easier to use than plain Javascript. It is also precompiled
+    into plain Javascript.
+iii. Comments are loaded from the server in the CommentBox.
+     Comments are created via the Comment component.
+     Comments are saved via the CommentForm component.
+iv. props are immutable, while state is mutable.
+    It matters because state allows for interactions,
+    while props are passed from parent and are "owned"
+    by them. Without a mutable property such as state,
+    you wouldn't be able to incorporate interactions using React.
+
+8.2.b:
+i. An added comment is displayed on the webpage, while a removed comment
+   is no longer shown on the webpage. This happens every two seconds.
+   The reason is because the polling interval for re-rendering the comments on
+   the page is two seconds.
+ii. Because it uses state to implement dynamic updates, thereby reducing the need
+    to re-render the comments.
+iii. Because as the webpage changes, so too should the view. An irregular view
+     may cause data to be displayed incorrectly.
+iv. If the server rejects the comment, it won't be displayed.
+    This would be considered foolishness, as this is a trade-off for speed over
+    the reliability of the application.
