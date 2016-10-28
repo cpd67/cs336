@@ -176,7 +176,7 @@ app.post('/people', function(req, res) {
 	//http://www.w3schools.com/jsref/jsref_push.asp
 	//https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
 	data.push(newPerson);
-	res.sendStatus(201);
+	res.sendStatus(200);
 });
 
 
@@ -200,7 +200,7 @@ app.put('/person/:id/:first', function(req, res) {
 	} else {
 		//Found!
 		data[index].firstname = newName;
-		res.sendStatus(200);
+		res.sendStatus(201);
 	}
 });
 
