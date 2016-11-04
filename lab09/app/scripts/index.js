@@ -1,9 +1,25 @@
-var data = [
-  {id: 1, author: "Pete Hunt", text: "This is one comment"},
-  {id: 2, author: "Jordan Walke", text: "This is *another* comment"}
-];
+/** Copied over from the Facebook tutorial, as for some reason my old one
+    was not working correctly.
+ */
 
-// tutorial1.js
+var Comment = React.createClass({
+  rawMarkup: function() {
+    var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
+    return { __html: rawMarkup };
+  },
+
+  render: function() {
+    return (
+      <div className="comment">
+        <h2 className="commentAuthor">
+          {this.props.author}
+        </h2>
+        <span dangerouslySetInnerHTML={this.rawMarkup()} />
+      </div>
+    );
+  }
+});
+
 var CommentBox = React.createClass({
   loadCommentsFromServer: function() {
     $.ajax({
@@ -26,7 +42,7 @@ var CommentBox = React.createClass({
     comment.id = Date.now();
     var newComments = comments.concat([comment]);
     this.setState({data: newComments});
-    $.ajax( {
+    $.ajax({
       url: this.props.url,
       dataType: 'json',
       type: 'POST',
@@ -51,14 +67,13 @@ var CommentBox = React.createClass({
     return (
       <div className="commentBox">
         <h1>Comments</h1>
-        <CommentList data={this.state.data}/>
-        <CommentForm onCommentSubmit={this.handleCommentSubmit}/>
+        <CommentList data={this.state.data} />
+        <CommentForm onCommentSubmit={this.handleCommentSubmit} />
       </div>
     );
   }
 });
 
-// tutorial2.js
 var CommentList = React.createClass({
   render: function() {
     var commentNodes = this.props.data.map(function(comment) {
@@ -90,7 +105,7 @@ var CommentForm = React.createClass({
     e.preventDefault();
     var author = this.state.author.trim();
     var text = this.state.text.trim();
-    if(!text || !author) {
+    if (!text || !author) {
       return;
     }
     this.props.onCommentSubmit({author: author, text: text});
@@ -117,26 +132,7 @@ var CommentForm = React.createClass({
   }
 });
 
-var Comment = React.createClass({
-  rawMarkup: function() {
-    var md = new Remarkable();
-    var rawMarkup = md.render(this.props.children.toString());
-    return { __html: rawMarkup };
-  },
-
-  render: function() {
-    return (
-      <div className="comment">
-        <h2 className="commentAuthor">
-          {this.props.author}
-        </h2>
-        <span dangerouslySetInnerHTML={this.rawMarkup()} />
-      </div>
-      );
-    }
-});
-
 ReactDOM.render(
-  <CommentBox url="/api/comments" pollInterval={2000}/>,
+  <CommentBox url="/api/comments" pollInterval={2000} />,
   document.getElementById('content')
 );
