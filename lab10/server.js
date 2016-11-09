@@ -14,7 +14,19 @@ var fs = require('fs');
 var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
+
+//Lab10
+var MongoClient = require('mongodb').MongoClient;
+var databaseConnection;
+
 var app = express();
+
+MongoClient.connect('mongo ds021701.mlab.com:21701/cs336', function(err, db) {
+  if (err) throw err;
+
+  databaseConnection = db;
+
+});
 
 var COMMENTS_FILE = path.join(__dirname, 'comments.json');
 
