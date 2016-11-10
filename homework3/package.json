@@ -1,0 +1,12 @@
+{
+  "name": "homework3",
+  "version": "1.0.0",
+  "description": "CS-336 Homework 3 code solution.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Chris Dilley (cpd5)",
+  "license": "ISC"
+}
