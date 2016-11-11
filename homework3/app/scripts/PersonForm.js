@@ -1,7 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Remarkable from 'remarkable';
-import $ from 'jquery';
 
 import '../css/base.css';
 

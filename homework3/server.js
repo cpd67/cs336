@@ -1,33 +1,45 @@
 /**
- * server.js contains the code needed in order to do homework2 for CS-336.
+ * server.js contains the code needed in order to do homework3 for CS-336.
  * Student name: Chris Dilley (cpd5).
  * Date: 11/10/16 (Start date).
  * The following resources were helpful:
- * Express routing tutorial: http://expressjs.com/en/guide/routing.html
- * AJAX deferred tutorial: http://jqfundamentals.com/chapter/ajax-deferreds
- * Keeping track of which HTTP methods are idempotent and nullipotent: http://restcookbook.com/HTTP%20Methods/idempotency/
- * Returning a status code from an idempotent method: http://stackoverflow.com/questions/4088350/is-rest-delete-really-idempotent
- * Status code for a "failed" POST request: http://stackoverflow.com/questions/25541203/http-response-code-when-resource-creation-post-fails-due-to-existing-matching-re?noredirect=1&lq=1
+ * Facebook React tutorial: https://web.archive.org/web/20161019043332/https://facebook.github.io/react/docs/tutorial.html
+ * CS-336 Lab 09 -
+ * CS-336 Lab 10 - https://cs.calvin.edu/courses/cs/336/kvlinden/10mongo/lab.html
+ * Mongodb tutorials: http://mongodb.github.io/node-mongodb-native/2.2/quick-start/
  */
 
 var express = require('express');
 var bodyParser = require('body-parser');
 
+//Homework 3
+var MongoClient = require('mongodb').MongoClient
+var databaseConnection;
+
 var app = express();
 
 //http://www.w3schools.com/js/js_arrays.asp
 //http://stackoverflow.com/questions/11427451/storing-json-value-in-javascript-array
-var data = [ { firstname: 'Sir Edmond', lastname: 'Jones', loginID: 1, startDate: '10/20/2000'},
+/*var data = [ { firstname: 'Sir Edmond', lastname: 'Jones', loginID: 1, startDate: '10/20/2000'},
 			 { firstname: 'David', lastname: 'Son', loginID: 2, startDate: '08/19/2010'},
 			 { firstname: 'Sarah', lastname: 'Smiles', loginID: 3, startDate: '10/3/2015'} ];
+*/
+
+///////////////Homework 3////////////////////
+//Adapted from: https://expressjs.com/en/guide/database-integration.html#mongo
+//Establish a connection with the database, then store the connection in a global variable.
+MongoClient.connect('mongodb://cs336:PASSWORD@ds149577.mlab.com:49577/homework3', function (err, db) {
+  if (err) throw err
+
+	databaseConnection = db;
+});
 
 ///////////////Homework 1 ///////////////////
-
 app.use(express.static('dist'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
-// Additional middleware which will set headers that we need on each request.
+//Taken from Facebook React tutorial
 app.use(function(req, res, next) {
     // Set permissive CORS header - this allows this server to be used only as
     // an API server in conjunction with something like webpack-dev-server.
@@ -40,55 +52,42 @@ app.use(function(req, res, next) {
 
 //List all people objects (/people)
 app.get('/people', function(req, res) {
-	//http://expressjs.com/en/4x/api.html#res.json
-	//Send all data from the dataset array to the user
-	res.json(data);
+	var collection = databaseConnection.collection('people');
+
+	collection.find({}).toArray(function(err, docs) {
+		if(err) throw err;
+
+		res.json(docs);
+	});
 });
 
 //Get the full record for the person with the given ID (/person/id)
 app.get('/person/:id', function(req, res) {
-	var person;
-	//http://stackoverflow.com/questions/18238173/javascript-loop-through-json-array
-	//Iterate through the dataset
-	for(var i = 0; i < data.length; i++) {
-		//https://scotch.io/tutorials/use-expressjs-to-get-url-and-post-parameters
-		//If the login ID is equal to the passed ID...
-		if(data[i].loginID == req.params.id) {
-			//Store the record of the person
-			person = data[i];
-		}
-	}
-	//http://stackoverflow.com/questions/2647867/how-to-determine-if-variable-is-undefined-or-null
-	//If we didn't find the person...
-	if(person == null) {
-		//http://expressjs.com/en/4x/api.html#res.sendStatus
-		res.sendStatus(404);
-	} else {
-		//Send the person information
-		res.json(person);
-	}
+	var id = req.params.id;
+
+	var collection = databaseConnection.collection('people');
+
+	//Might have to do findOne()...
+	collection.find({'loginID': id}).toArray(function(err, docs) {
+		if(err) throw err;
+
+		res.json(docs);
+	});
 });
 
 //Get the full name (first and last) for the person with the given ID (/person/id/name)
 app.get('/person/:id/name', function(req, res) {
-	var firstName, lastName;
-	//Iterate through the dataset
-	for(var i = 0; i < data.length; i++) {
-		//If the login ID is equal to the id that was passed by the GET request...
-		if(data[i].loginID == req.params.id) {
-			//Store the first and last name
-			firstName = data[i].firstname;
-			lastName = data[i].lastname;
-		}
-	}
+	var id = req.params.id;
 
-	//If either variable is null...
-	if(firstName == null || lastName == null) {
-		res.sendStatus(404);
-	} else {
-		//Send the name
-		res.send(firstName + " " + lastName);
-	}
+	var collection = databaseConnection.collection('people');
+
+	//Might have to do findOne()...
+	collection.find({'loginID': id}).toArray(function(err, docs) {
+		if(err) throw err;
+
+		res.send(docs.value.firstname + " " + docs.value.lastname);
+	});
+
 });
 
 //Seniority (number of years with the organization) of the person with the given ID (/person/id/years)
@@ -96,7 +95,7 @@ app.get('/person/:id/name', function(req, res) {
 //for the years worked
 app.get('/person/:id/years', function(req, res) {
 	//Get today's date
-	var todayDate = new Date();
+/*	var todayDate = new Date();
 	var startDate, calcDate, years;
 	//Iterate through the dataset
 	for(var i = 0; i < data.length; i++) {
@@ -122,6 +121,7 @@ app.get('/person/:id/years', function(req, res) {
 		//Send the result
 		res.send("Years: " + years.toString());
 	}
+	*/
 });
 
 ////////////////Homework 2/////////////////////
@@ -129,7 +129,7 @@ app.get('/person/:id/years', function(req, res) {
 //GET method that retrieves a person from our database
 //and used in tandem with the AJAX call of the second new webpage
 app.get('/person', function(req, res) {
-		//Get the ID passed from the form
+/*		//Get the ID passed from the form
 		var id = req.query.personID;
 		var person;
 		for(var i = 0; i < data.length; i++) {
@@ -146,6 +146,7 @@ app.get('/person', function(req, res) {
 			//Found!
 			res.send(person);
 		}
+	*/
 });
 
 //POST method that creates new people
@@ -179,17 +180,20 @@ app.post('/people', function(req, res) {
 
 	//Everything seems okay. Go ahead with the addition of the person.
 	var newPerson = { firstname: first, lastname: last, loginID: login, startDate: date};
-	//http://www.w3schools.com/jsref/jsref_push.asp
-	//https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
-	data.push(newPerson);
-	res.json(data); //I didn't say res.json, which was why I was geting that strange error...
+
+	//Get the collection of People from the database
+	var collection = databaseConnection.collection('people');
+
+	//Insert the new Person
+	collection.insert(newPerson);
+//	res.json(data); //I didn't say res.json, which was why I was geting that strange error...
 });
 
 
 //http://stackoverflow.com/questions/12142652/what-is-the-usefulness-of-put-and-delete-http-request-methods
 //PUT method that updates the first name of a person (tested with curl)
 app.put('/person/:id/:first', function(req, res) {
-	var person, index;
+/*	var person, index;
 	//Get the first name of the person
 	var newName = req.params.first;
 	for(var i = 0; i < data.length; i++) {
@@ -208,11 +212,12 @@ app.put('/person/:id/:first', function(req, res) {
 		data[index].firstname = newName;
 		res.sendStatus(201);
 	}
+	*/
 });
 
 //DELETE method that removes a person from our "database" (tested with curl)
 app.delete('/person/:id', function(req, res) {
-	var person, index;
+/*	var person, index;
 	for(var i = 0; i < data.length; i++) {
 		if(data[i].loginID == req.params.id) {
 			person = data[i];
@@ -230,6 +235,7 @@ app.delete('/person/:id', function(req, res) {
 		data.splice(index, 1);
 		res.sendStatus(200);
 	}
+	*/
 });
 
 //Listen on port 3000
