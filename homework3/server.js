@@ -23,14 +23,20 @@ var data = [ { firstname: 'Sir Edmond', lastname: 'Jones', loginID: 1, startDate
 
 ///////////////Homework 1 ///////////////////
 
-//Give the user a welcome message when they reach root
-app.get('/', function (req, res) {
-	res.send('Hello, World!');
-});
-
-app.use(express.static('public'));
+app.use(express.static('app'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
+
+// Additional middleware which will set headers that we need on each request.
+app.use(function(req, res, next) {
+    // Set permissive CORS header - this allows this server to be used only as
+    // an API server in conjunction with something like webpack-dev-server.
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Disable caching so we'll always get the latest comments.
+    res.setHeader('Cache-Control', 'no-cache');
+    next();
+});
 
 //List all people objects (/people)
 app.get('/people', function(req, res) {
@@ -145,10 +151,10 @@ app.get('/person', function(req, res) {
 //POST method that creates new people
 app.post('/people', function(req, res) {
 	//Get the passed form data
-	var first = req.body.first;
-	var last = req.body.last;
-	var login = req.body.login;
-	var date = req.body.date;
+	var first = req.body.firstname;
+	var last = req.body.lastname;
+	var login = req.body.loginID;
+	var date = req.body.startDate;
 
 	//If some data is missing...
 	if(first == '' || last == '' || login == '' || date == '') {
@@ -176,7 +182,7 @@ app.post('/people', function(req, res) {
 	//http://www.w3schools.com/jsref/jsref_push.asp
 	//https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
 	data.push(newPerson);
-	res.sendStatus(200);
+	res.json(data); //I didn't say res.json, which was why I was geting that strange error...
 });
 
 
