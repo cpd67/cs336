@@ -1,7 +1,7 @@
 /**
  * server.js contains the code needed in order to do homework2 for CS-336.
  * Student name: Chris Dilley (cpd5).
- * Date: 10/23/16 (Start date).
+ * Date: 11/10/16 (Start date).
  * The following resources were helpful:
  * Express routing tutorial: http://expressjs.com/en/guide/routing.html
  * AJAX deferred tutorial: http://jqfundamentals.com/chapter/ajax-deferreds
@@ -23,7 +23,7 @@ var data = [ { firstname: 'Sir Edmond', lastname: 'Jones', loginID: 1, startDate
 
 ///////////////Homework 1 ///////////////////
 
-app.use(express.static('app'));
+app.use(express.static('dist'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
