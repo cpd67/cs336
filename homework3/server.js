@@ -4,7 +4,7 @@
  * Date: 11/10/16 (Start date).
  * The following resources were helpful:
  * Facebook React tutorial: https://web.archive.org/web/20161019043332/https://facebook.github.io/react/docs/tutorial.html
- * CS-336 Lab 09 -
+ * CS-336 Lab 09 - https://cs.calvin.edu/courses/cs/336/kvlinden/09webpack/lab.html
  * CS-336 Lab 10 - https://cs.calvin.edu/courses/cs/336/kvlinden/10mongo/lab.html
  * Mongodb tutorials: http://mongodb.github.io/node-mongodb-native/2.2/quick-start/
  * Checking the size of a returned cursor of a find() call: https://docs.mongodb.com/v3.2/reference/method/cursor.toArray/
@@ -13,22 +13,19 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 
-//Homework 3
 var MongoClient = require('mongodb').MongoClient
 var databaseConnection;
 
 var app = express();
 
-///////////////Homework 3////////////////////
 //Adapted from: https://expressjs.com/en/guide/database-integration.html#mongo
 //Establish a connection with the database, then store the connection in a global variable.
-MongoClient.connect('mongodb://cs336:bjarne@ds149577.mlab.com:49577/homework3', function (err, db) {
+MongoClient.connect('mongodb://cs336:PASSWORD@ds149577.mlab.com:49577/homework3', function (err, db) {
   if (err) throw err
 
 	databaseConnection = db;
 });
 
-///////////////Homework 1 ///////////////////
 app.use(express.static('dist'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -83,10 +80,13 @@ app.get('/person/:id', function(req, res) {
 
 //Get the full name (first and last) for the person with the given ID (/person/id/name)
 app.get('/person/:id/name', function(req, res) {
+  //Get the id
 	var id = Number(req.params.id);
 
+  //Get a handle to the collection
 	var collection = databaseConnection.collection('people');
 
+  //Check if the Person is in the database
   var holder = collection.find({loginID: id});
   holder.toArray(function(err, docs) {
     //Did we find no one?
@@ -116,6 +116,7 @@ app.get('/person/:id/years', function(req, res) {
   var holder = collection.find({loginID: id});
   holder.toArray(function(err, docs) {
     if(docs.length == 0) {
+      //Person not found!
       res.sendStatus(404);
     } else {
       //Calculate the number of years worked.
@@ -135,24 +136,23 @@ app.get('/person/:id/years', function(req, res) {
 //GET method that retrieves a person from our database
 //and used in tandem with the AJAX call of the second new webpage
 app.get('/person', function(req, res) {
-/*		//Get the ID passed from the form
-		var id = req.query.personID;
-		var person;
-		for(var i = 0; i < data.length; i++) {
-			if(data[i].loginID == id) {
-				person = data[i];
-			}
-		}
+		//Get the ID passed from the form
+		var id = Number(req.query.personID);
 
-		//Did we find the person?
-		if(person == null) {
-			//Not found!
-			res.sendStatus(404);
-		} else {
-			//Found!
-			res.send(person);
-		}
-	*/
+    //Get a handle to the collection
+    var collection = databaseConnection.collection('people');
+    var holder = collection.find({loginID: id});
+
+    //Check if we have found the Person
+    holder.toArray(function(err, docs) {
+      if(docs.length == 0) {
+        //Nope!
+        res.sendStatus(404);
+      } else {
+        //Yep!
+        res.json(docs);
+      }
+    })
 });
 
 //POST method that creates new people
@@ -173,7 +173,7 @@ app.post('/people', function(req, res) {
 		return;
 	}
 
-	//Check if the login ID is already in the "database"
+	//Check if the login ID is already in the database
 	//Everything seems okay. Go ahead with the addition of the person.
 	var newPerson = { firstname: first, lastname: last, loginID: login, startDate: date};
 
@@ -185,20 +185,17 @@ app.post('/people', function(req, res) {
 
   //Check if the Person is already in the database.
   holder.toArray(function(err, docs) {
-    //Yes.
     if(docs.length > 0) {
+      //Yep!
       console.log("That Person already exists!");
       console.log(docs[0]);
-    //No.
     } else {
-      //Insert the new Person
+      //Nope. Insert the new Person
       collection.insert(newPerson);
     }
   });
 });
 
-
-//http://stackoverflow.com/questions/12142652/what-is-the-usefulness-of-put-and-delete-http-request-methods
 //PUT method that updates the first name of a person (tested with curl)
 app.put('/person/:id/:first', function(req, res) {
   //Get the first name of the person
@@ -223,18 +220,20 @@ app.put('/person/:id/:first', function(req, res) {
   });
 });
 
-//DELETE method that removes a person from our "database" (tested with curl)
+//DELETE method that removes a person from our database (tested with curl)
 app.delete('/person/:id', function(req, res) {
+  //Get the id, handle to the collection, and check
+  //if the Person exists in the database.
   var id = Number(req.params.id);
-
   var collection = databaseConnection.collection('people');
-
   var holder = collection.find({loginID: id});
 
   holder.toArray(function(err, docs) {
     if(docs.length == 0) {
+      //Person does not exist!
       res.sendStatus(404);
     } else {
+      //Delete the Person.
       collection.remove({loginID: id});
       res.sendStatus(200);
     }

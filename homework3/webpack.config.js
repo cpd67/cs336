@@ -1,6 +1,7 @@
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 
+/* Figuring out how to server up multiple pages: https://github.com/ampedandwired/html-webpack-plugin#generating-multiple-html-files */
 module.exports = {
     entry: [
         __dirname + '/app/scripts/index.js'
@@ -17,6 +18,7 @@ module.exports = {
     },
     plugins: [
 		    new HtmlWebpackPlugin({template: __dirname + "/app/index.tmpl.html"}),
+        new HtmlWebpackPlugin({filename: "getPerson.html", template: __dirname + "/app/getPerson.html"}),
         new webpack.HotModuleReplacementPlugin()
     ],
     devServer: {

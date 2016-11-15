@@ -2,6 +2,7 @@ import React from 'react';
 
 import '../css/base.css';
 
+//Get information to create a new Person.
 module.exports = React.createClass({
   getInitialState: function() {
     return {firstname: '', lastname: '', loginID: '', startDate: ''};

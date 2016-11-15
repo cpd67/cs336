@@ -6,6 +6,7 @@ import '../css/base.css';
 import PersonList from './PersonList.js'
 import PersonForm from './PersonForm.js'
 
+//Display the list of Persons.
 //Pass the data to PersonList child component.
 //componentDidMount called automatically when the component is
 //rendered for the first time.

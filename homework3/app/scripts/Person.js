@@ -3,6 +3,7 @@ import Remarkable from 'remarkable';
 
 import '../css/base.css';
 
+//Contains information about a Person.
 // this.props is passed from the surrounding PersonList component
 module.exports = React.createClass({
   rawMarkup: function() {
