@@ -22,7 +22,7 @@ var databaseConnection;
 var app = express();
 
 //Establish a connection with the database.
-MongoClient.connect('mongodb://cs336:bjarne@ds021701.mlab.com:21701/cs336', function (err, db) {
+MongoClient.connect('mongodb://cs336:PASSWORD@ds021701.mlab.com:21701/cs336', function (err, db) {
   if (err) throw err
 
   databaseConnection = db;
