@@ -1,9 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Remarkable from 'remarkable';
-import $ from 'jquery';
+import { Link } from 'react-router';
 
-import '../css/base.css';
 
 module.exports = React.createClass({
   rawMarkup: function() {
@@ -19,8 +17,8 @@ module.exports = React.createClass({
           {this.props.author}
         </h2>
         <span dangerouslySetInnerHTML={this.rawMarkup()} />
+        <Link to={'/' + this.props.id}>Edit</Link>
       </div>
     );
   }
 });
-
