@@ -30,17 +30,11 @@ module.exports = React.createClass({
     contextTypes: {
         router: React.PropTypes.object
     },
-    handleUpdate: function() {
-        var updatedComment = {
-            author: this.state.author.trim(),
-            text: this.state.text.trim()
-        }
+    handleDelete: function() {
         $.ajax({
             url: API_URL + "/" + this.props.params.id,
-            dataType: 'json',
-            type: 'PUT',
+            type: 'DELETE',
             contentType:'application/json',
-            data: JSON.stringify(updatedComment)
         })
             .done(function(comments){
                 this.context.router.push('/');
@@ -48,6 +42,26 @@ module.exports = React.createClass({
             .fail(function(xhr, status, errorThrown) {
                 console.error(API_URL, status, errorThrown.toString());
             }.bind(this));
+    },
+    handleUpdate: function() {
+      var updatedComment = {
+          author: this.state.author.trim(),
+          text: this.state.text.trim()
+      }
+      $.ajax({
+          url: API_URL + "/" + this.props.params.id,
+          dataType: 'json',
+          type: 'PUT',
+          contentType:'application/json',
+          data: JSON.stringify(updatedComment)
+      })
+          .done(function(comments){
+              this.context.router.push('/');
+          }.bind(this))
+          .fail(function(xhr, status, errorThrown) {
+              console.error(API_URL, status, errorThrown.toString());
+          }.bind(this));
+
     },
     render: function() {
         return (
@@ -65,6 +79,7 @@ module.exports = React.createClass({
                         onChange={this.handleTextChange}
                     />
                     <button type="button" onClick={this.handleUpdate}>Update</button>
+                    <button type="button" onClick={this.handleDelete}>Delete</button>
                 </form>
                 <Link to='/'>Cancel</Link>
             </div>

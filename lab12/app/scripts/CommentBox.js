@@ -1,9 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Remarkable from 'remarkable';
 import $ from 'jquery';
-
-import '../css/base.css';
 
 import CommentForm from './CommentForm.js';
 import CommentList from './CommentList.js';
@@ -21,7 +17,7 @@ module.exports = React.createClass({
         this.setState({data: data});
       }.bind(this),
       error: function(xhr, status, err) {
-        console.error(API_URL, status, err.toString());
+        console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
   },
