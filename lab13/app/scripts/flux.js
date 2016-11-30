@@ -4,7 +4,23 @@ import { createStore } from 'redux';
 import { API_URL, POLL_INTERVAL } from './global';
 
 let StoreTools = {
-    // TODO - Useful utility functions for the state representation
+  dispatchLoadingComments: function () {
+    store.dispatch(ActionTools.loadingComments());
+  },
+
+  startLoadingComments: function() {
+    this.dispatchLoadingComments();
+    setInterval(this.dispatchLoadingComments, POLL_INTERVAL);
+  },
+
+  findComment: function(id, commentList) {
+    for (var comment of commentList) {
+      if (comment.id == id) {
+        return { id: id, author: comment.author, text: comment.text };
+      }
+    }
+    return { id: '',  author: '', text: '' };
+  }
 }
 
 let ActionTools = {
@@ -110,7 +126,7 @@ let Reducers = {
 function commentsApp(state, action) {
   switch (action.type) {
     case 'LOADING_COMMENTS':
-      Reducers.loadedComments();
+      Reducers.loadingComments();
       return state;
     case 'LOADED_COMMENTS':
       return { data: action.comments};
