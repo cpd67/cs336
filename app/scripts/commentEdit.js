@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
-import $ from 'jquery';
 
-import { API_URL } from './global';
+import { store, ActionTools, StoreTools } from './flux';
 
 module.exports = React.createClass({
     getInitialState: function() {
@@ -16,10 +15,9 @@ module.exports = React.createClass({
             this.loadData();
         }
     },
-    loadData: function() {
-        $.ajax(API_URL + "/" + this.props.params.id) .done(function(comments) {
-            this.setState(comments[0]);
-        }.bind(this));
+    componentDidMount: function() {
+      let commentToEdit = StoreTools.findComment(this.props.params.id, store.getState().data);
+      this.setState({author: commentToEdit.author, text: commentToEdit.text});
     },
     handleAuthorChange: function(e) {
         this.setState({author: e.target.value});
@@ -31,39 +29,18 @@ module.exports = React.createClass({
         router: React.PropTypes.object
     },
     handleDelete: function() {
-        $.ajax({
-            url: API_URL + "/" + this.props.params.id,
-            type: 'DELETE',
-            contentType:'application/json',
-        })
-            .done(function(comments){
-                this.context.router.push('/');
-            }.bind(this))
-            .fail(function(xhr, status, errorThrown) {
-                console.error(API_URL, status, errorThrown.toString());
-            }.bind(this));
+      store.dispatch(ActionTools.deleteComment(Number(this.props.params.id), updatedComment));
+      this.context.router.push('/');
     },
     handleUpdate: function() {
       var updatedComment = {
           author: this.state.author.trim(),
           text: this.state.text.trim()
       }
-      $.ajax({
-          url: API_URL + "/" + this.props.params.id,
-          dataType: 'json',
-          type: 'PUT',
-          contentType:'application/json',
-          data: JSON.stringify(updatedComment)
-      })
-          .done(function(comments){
-              this.context.router.push('/');
-          }.bind(this))
-          .fail(function(xhr, status, errorThrown) {
-              console.error(API_URL, status, errorThrown.toString());
-          }.bind(this));
-
+      store.dispatch(ActionTools.editComment(Number(this.props.params.id), updatedComment));
+      this.context.router.push('/');
     },
-    render: function() {
+      render: function() {
         return (
             <div>
                 <form className="commentForm">
